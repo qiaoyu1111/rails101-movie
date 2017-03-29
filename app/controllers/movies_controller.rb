@@ -42,6 +42,32 @@ class MoviesController < ApplicationController
     redirect_to movies_path, alert: "Movie deleted ."
   end
 
+  def love
+    @movie = Movie.find(params[:id])
+
+      if !current_user.is_member_of?(@movie)
+        current_user.love!(@movie)
+        flash[:notice] = "收藏电影成功！"
+      else
+        flash[:warning] = "你已经收藏该电影了！"
+      end
+
+      redirect_to movie_path(@movie)
+  end
+
+  def quit
+    @movie = Movie.find(params[:id])
+
+    if current_user.is_member_of?(@movie)
+      current_user.quit!(@movie)
+      flash[:alert] = "已取消该电影收藏！"
+    else
+      flash[:warning] = "你没有收藏该电影，怎么取消收藏 XD"
+    end
+
+    redirect_to movie_path(@movie)
+  end
+
   private
 
   def find_movie_and_check_permission
@@ -51,6 +77,7 @@ class MoviesController < ApplicationController
       redirect_to root_path, alert: "You have no permission."
     end
   end
+
 
   def movie_params
     params.require(:movie).permit(:title, :description)
