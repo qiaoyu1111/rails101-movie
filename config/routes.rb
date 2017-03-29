@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :account do
     resources :movies
+    resources :reviews
   end
 
   devise_for :users
