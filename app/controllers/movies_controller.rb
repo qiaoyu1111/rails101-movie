@@ -47,7 +47,7 @@ class MoviesController < ApplicationController
     @movie = Movie.find(params[:id])
 
       if !current_user.is_member_of?(@movie)
-        current_user.love!(@movie)
+        current_user.love!(@movie) 
         flash[:notice] = "收藏电影成功！"
       else
         flash[:warning] = "你已经收藏该电影了！"
