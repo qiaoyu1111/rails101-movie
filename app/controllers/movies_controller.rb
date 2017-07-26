@@ -8,7 +8,7 @@ class MoviesController < ApplicationController
 
   def show
     @movie = Movie.find(params[:id])
-    @reviews = @movie.reviews.recent.paginate(:page => params[:page], :per_page => 5)
+    @reviews = @movie.reviews.paginate(:page => params[:page], :per_page => 5)
   end
 
   def edit
@@ -32,7 +32,7 @@ class MoviesController < ApplicationController
 
   def update
     if @movie.update(movie_params)
-    redirect_to movies_path, notice: "Update Success !"
+    redirect_to movie_path, notice: "Update Success !"
     else
       render :edit
     end
@@ -47,7 +47,7 @@ class MoviesController < ApplicationController
     @movie = Movie.find(params[:id])
 
       if !current_user.is_member_of?(@movie)
-        current_user.love!(@movie) 
+        current_user.love!(@movie)
         flash[:notice] = "收藏电影成功！"
       else
         flash[:warning] = "你已经收藏该电影了！"

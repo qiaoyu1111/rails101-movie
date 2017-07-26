@@ -19,12 +19,14 @@
 
 
     <% if current_user && current_user == @movie.user %>
-      <%= link_to("Edit", edit_movie_path(@movie), class: "btn btn-primary pull-right") %>
+      <%= link_to("Edit Movie", edit_movie_path(@movie), class: "btn btn-primary pull-right") %>
     <% end %>
 
   </div>
   <h2><%= @movie.title %></h2>
   <p><%= @movie.description %></p>
+
+  <br><br>
 
     <table class="table">
       <thead>
@@ -32,14 +34,18 @@
           <th>影评内容</th>
           <th>发表者</th>
           <th>发表时间</th>
+          <th>编辑</th>
         </tr>
       </thead>
       <tbody>
         <% @reviews.each do |review| %>
           <tr>
-            <td><%= review.content %></td>
+            <td><%= simple_format(review.content) %></td>
             <td><%= review.user.email %></td>
             <td><%= review.created_at %></td>
+            <td><%= link_to('Edit',edit_movie_review_path(review.movie, review), class: "btn btn-default btn-xs") %></td>
+            <td><%= link_to('Delete',movie_review_path(review.movie, review), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-default btn-xs") %></td>
+
           </tr>
         <% end %>
       </tbody>
